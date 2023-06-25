@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Device Mapping</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Device Mapping</h1>
+  <form id="device-mapping-form">
+    <label for="device">Select a device:</label>
+    <select id="device">
+      <!-- Options will be dynamically populated using JavaScript -->
+    </select>
+
+    <label for="custom-key">Enter a custom key:</label>
+    <input type="text" id="custom-key">
+
+    <button type="submit">Map Device</button>
+  </form>
+
+</body>
+<script>
+    var res;
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer 4208a9b1-1347-4b1c-9226-96af47ac80af");
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("https://api.smartthings.com/v1/devices", requestOptions)
+  .then(response => response.text())
+  .then(result => {
+    let disp="<option value=null>Select</option>";
+    let res = JSON.parse(result)
+    console.log(res["items"]);
+    res["items"].forEach((entries)=>
+              {
+                  console.log(entries["name"]);
+                  disp+="<option value="+entries["deviceId"]+">"+entries["name"]+"</option>";
+              
+              })
+ 
+    document.getElementById("device").innerHTML=disp;
+})
+  .catch(error => console.log('error', error));
+
+//   document.getElementById("device-list").innerHTML=res;
+  </script>
+</html>

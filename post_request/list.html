@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Device List</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Device List</h1>
+  <ul id="device-list"></ul>
+
+  <script>
+    var res;
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer 4208a9b1-1347-4b1c-9226-96af47ac80af");
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("https://api.smartthings.com/v1/devices", requestOptions)
+  .then(response => response.text())
+  .then(result => {
+    let disp="";
+    let res = JSON.parse(result)
+    console.log(res["items"]);
+    res["items"].forEach((entries)=>
+              {
+                  console.log(entries["name"]);
+                  disp+="<li>"+entries["name"]+"</li>";
+              
+              })
+    document.getElementById("device-list").innerHTML=disp;
+})
+  .catch(error => console.log('error', error));
+
+//   document.getElementById("device-list").innerHTML=res;
+  </script>
+</body>
+</html>
